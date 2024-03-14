@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE suite SYSTEM "http://testng.org/testng-1.0.dtd">
+<suite name="All Test Suite">
+	<test verbose="2" preserve-order="true" name="Own Project for PEEX">
+		<classes>
+			<class name="own.proj.LoginTest"></class>
+			<class name="own.proj.ProductsPageTest"></class>
+			<class name="own.proj.CartTest"></class>
+		</classes>
+	</test>
+</suite>
