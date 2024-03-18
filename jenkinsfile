@@ -5,7 +5,7 @@ pipeline {
             steps {
                 script {
                     def branchName = env.BRANCH_NAME
-                    if (branchName && !(branchName == "master" || branchName.startsWith("feature/"))) {
+                    if (branchName && !(branchName == "main" || branchName.startsWith("feature/"))) {
                         echo "Warning: The branch name '${branchName}' seems inappropriate."
                     }
                 }
@@ -14,7 +14,7 @@ pipeline {
         stage("Test") {
             when {
                 not {
-                    branch "master"
+                    branch "main"
                 }
                 anyOf {
                     branch "feature/*"
