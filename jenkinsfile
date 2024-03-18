@@ -1,20 +1,32 @@
 pipeline {
-    agent any
-    stages {
-        stage("Build") {
-            steps {
-                echo "Build stage."
-            }
+  agent any
+  stages {
+    stage("Test") {
+      when {
+        not {
+          branch "master"
         }
-        stage("Test") {
-            steps {
-                echo "Test stage."
-            }
+        anyOf {
+          branch "feature/*"
+          branch "bugfix/*"
         }
-        stage("Release") {
-            steps {
-                echo "Release stage."
-            }
-        }
+      }
+      steps {
+        echo "Test stage."
+      }
     }
+    stage("Fail") {
+      when {
+        not {
+          anyOf {
+            branch "feature/*"
+            branch "bugfix/*"
+          }
+        }
+      }
+      steps {
+        error("Wrong name for: ${env.BRANCH_NAME}")
+      }
+    }
+  }
 }
