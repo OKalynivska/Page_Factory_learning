@@ -1,9 +1,19 @@
 pipeline {
     agent any
     stages {
-        stage('build') {
+        stage("Build") {
             steps {
-                bat 'whoami'
+                echo "Build stage."
+            }
+        }
+        stage("Test") {
+            steps {
+                echo "Test stage."
+            }
+        }
+        stage("Release") {
+            steps {
+                echo "Release stage."
             }
         }
     }
