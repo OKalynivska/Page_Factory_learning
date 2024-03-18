@@ -1,32 +1,42 @@
 pipeline {
-  agent any
-  stages {
-    stage("Test") {
-      when {
-        not {
-          branch "master"
+    agent any
+    stages {
+        stage("Check Branch Name") {
+            steps {
+                script {
+                    def branchName = env.BRANCH_NAME
+                    if (!(branchName == "master" || branchName.startsWith("feature/"))) {
+                        echo "Warning: The branch name '${branchName}' seems inappropriate."
+                    }
+                }
+            }
         }
-        anyOf {
-          branch "feature/*"
-          branch "bugfix/*"
+        stage("Test") {
+            when {
+                not {
+                    branch "master"
+                }
+                anyOf {
+                    branch "feature/*"
+                    branch "bugfix/*"
+                }
+            }
+            steps {
+                echo "Test stage."
+            }
         }
-      }
-      steps {
-        echo "Test stage."
-      }
+        stage("Fail") {
+            when {
+                not {
+                    anyOf {
+                        branch "feature/*"
+                        branch "bugfix/*"
+                    }
+                }
+            }
+            steps {
+                error("Wrong name for: ${env.BRANCH_NAME}")
+            }
+        }
     }
-    stage("Fail") {
-      when {
-        not {
-          anyOf {
-            branch "feature/*"
-            branch "bugfix/*"
-          }
-        }
-      }
-      steps {
-        error("Wrong name for: ${env.BRANCH_NAME}")
-      }
-    }
-  }
 }
