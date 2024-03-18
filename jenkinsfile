@@ -14,11 +14,11 @@ pipeline {
         stage("Test") {
             when {
                 not {
-                    branch "main"
-                }
-                anyOf {
-                    branch "feature/*"
-                    branch "bugfix/*"
+                    anyOf {
+                        branch "main"
+                        branch "feature/*"
+                        branch "bugfix/*"
+                    }
                 }
             }
             steps {
@@ -27,12 +27,10 @@ pipeline {
         }
         stage("Fail") {
             when {
-                not {
-                    anyOf {
-                        branch "main"
-                        branch "feature/*"
-                        branch "bugfix/*"
-                    }
+                anyOf {
+                    branch "main"
+                    branch "feature/*"
+                    branch "bugfix/*"
                 }
             }
             steps {
