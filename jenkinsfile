@@ -29,6 +29,7 @@ pipeline {
             when {
                 not {
                     anyOf {
+                        branch "main"
                         branch "feature/*"
                         branch "bugfix/*"
                     }
