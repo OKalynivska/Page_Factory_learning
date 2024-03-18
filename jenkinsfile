@@ -5,13 +5,13 @@ pipeline {
             steps {
                 script {
                     def branchName = env.BRANCH_NAME
-                    if (branchName && !(branchName == "main" || branchName.startsWith("feature/") || branchName.startsWith("bugfix/"))) {
+                    if (branchName && !(branchName == "main" || branchName.startsWith("feature/*") || branchName.startsWith("bugfix/*"))) {
                         echo "Warning: The branch name '${branchName}' seems inappropriate."
                     }
                 }
             }
         }
-        stage("Test") {
+        stage("Test branch name") {
             when {
                 anyOf {
                     branch "main"
@@ -20,10 +20,10 @@ pipeline {
                 }
             }
             steps {
-                echo "Test stage."
+                echo "Your branch has allowed name"
             }
         }
-        stage("Fail") {
+        stage("Wrong branch name") {
             when {
                 not {
                     anyOf {
