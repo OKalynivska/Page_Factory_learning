@@ -5,10 +5,7 @@ pipeline {
             steps {
                 script {
                     def branchName = env.BRANCH_NAME
-                    if (!branchName) {
-                        echo "Error: No branch name found."
-                        currentBuild.result = 'ABORTED'
-                    } else if (branchName == "main" || branchName.startsWith("feature/") || branchName.startsWith("bugfix/")) {
+                    if (branchName && !(branchName == "main" || branchName.startsWith("feature/") || branchName.startsWith("bugfix/"))) {
                         echo "Warning: The branch name '${branchName}' seems inappropriate."
                     }
                 }
@@ -16,7 +13,11 @@ pipeline {
         }
         stage("Test") {
             when {
-                branchExists()
+                anyOf {
+                    branch "main"
+                    branch "feature/*"
+                    branch "bugfix/*"
+                }
             }
             steps {
                 echo "Test stage."
@@ -24,8 +25,7 @@ pipeline {
         }
         stage("Fail") {
             when {
-                allOf {
-                    branchExists()
+                not {
                     anyOf {
                         branch "main"
                         branch "feature/*"
