@@ -1,14 +1,11 @@
 pipeline {
   agent any
-
-  def branchName = env.BRANCH_NAME
-
-
   stages {
     // Stage to get and display branch name and changes
     stage("Get Branch Name and Changes") {
       steps {
         script {
+         def branchName = env.BRANCH_NAME
           echo "Branch name: ${branchName}"
 
           def changes = sh script: "git log --pretty=%B -n 100 origin/${branchName}", returnStdout: true
