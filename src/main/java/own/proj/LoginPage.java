@@ -1,15 +1,11 @@
 package own.proj;
 
-
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-public class LoginPage extends AbstractPage{
-
+public class LoginPage extends Pages{
 	@FindBy(how = How.ID, using = "user-name")
 	public WebElement username;
 
@@ -32,11 +28,7 @@ public class LoginPage extends AbstractPage{
 		click(loginButton);
 	}
 
-	public String checkErrorMessage(){
+	public String checkErrorMessage() {
 		return getText(errorMessage);
-	}
-
-	public ProductsPage productsPage(){
-		return new ProductsPage(driver);
 	}
 }

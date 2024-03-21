@@ -19,18 +19,16 @@ public class AbstractPage {
 	private WebDriverWait wait;
 	public WebDriver driver;
 
-
 	public AbstractPage(WebDriver driver) {
 		this.driver = driver;
 		wait = new WebDriverWait(driver, Duration.ofSeconds(20));
-		PageFactory.initElements(driver, this);
 	}
 
 	public void click(WebElement element) {
 		wait.until(elementToBeClickable(element));
 		element.click();
 
-		logger.info("\u001B[32m"+element + " is clicked\u001B[0m");
+		logger.info("\u001B[32m" + element + " is clicked\u001B[0m");
 	}
 
 	public void writeText(WebElement element, String text) {
@@ -38,7 +36,7 @@ public class AbstractPage {
 		element.sendKeys(text);
 
 		logger.info("\u001B[32m'{}' is typed in the {}\u001B[0m", text, element.getAttribute("id"));
-		}
+	}
 
 	public String getText(WebElement element) {
 		wait.until(ExpectedConditions.visibilityOf(element));
@@ -49,6 +47,7 @@ public class AbstractPage {
 		Actions action = new Actions(driver);
 		wait.until(ExpectedConditions.visibilityOf(element));
 		action.moveToElement(element).build().perform();
+
 		logger.info("mouse pointer is moved to the " + element.getAccessibleName());
 	}
 
@@ -62,4 +61,8 @@ public class AbstractPage {
 		action.sendKeys(Keys.PAGE_DOWN).build().perform();
 	}
 
+	public <T extends AbstractPage> T initPage(String url, Class<T> pageClass) {
+		driver.get(PropertiesUtil.get(url));
+		return PageFactory.initElements(driver, pageClass);
+	}
 }

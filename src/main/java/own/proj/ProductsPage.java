@@ -1,7 +1,5 @@
 package own.proj;
 
-import static org.openqa.selenium.By.name;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -12,12 +10,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-public class ProductsPage extends AbstractPage{
-
-	public ProductsPage(WebDriver driver) {
-		super(driver);
-	}
-
+public class ProductsPage extends Pages {
 	@FindBy(how = How.CLASS_NAME, using = "title")
 	private WebElement productPageTitle;
 
@@ -30,7 +23,10 @@ public class ProductsPage extends AbstractPage{
 	@FindBy(how = How.CLASS_NAME, using = "inventory_item")
 	private List<WebElement> listInventoryItems;
 
-	public String getProductsPageName(){
+	public ProductsPage(WebDriver driver) {
+		super(driver);
+	}
+	public String getProductsPageName() {
 		return getText(productPageTitle);
 	}
 
@@ -57,5 +53,4 @@ public class ProductsPage extends AbstractPage{
 			}
 		}
 	}
-
 }

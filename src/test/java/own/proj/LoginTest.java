@@ -7,11 +7,13 @@ import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
 public class LoginTest extends AbstractTest {
+	private Pages pages;
 	private LoginPage loginPage;
 
 	@BeforeMethod
-	public void goToPage() {
-		loginPage = openPage("loginUrl", LoginPage.class);
+	public void goToLoginPage() {
+		pages=new Pages(driver);
+		loginPage = pages.loginPage();
 	}
 
 	@DataProvider(name = "loginData")
@@ -33,7 +35,7 @@ public class LoginTest extends AbstractTest {
 	@Test
 	public void loginSuccessful() {
 		loginPage.login("standard_user", "secret_sauce");
-		String expectedName = openPage("productsUrl", ProductsPage.class).getProductsPageName();
+		String expectedName = pages.productsPage().getProductsPageName();
 
 		assertEquals(expectedName, "Products", "Values are different");
 	}

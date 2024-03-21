@@ -7,8 +7,7 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.How;
 
-public class ProductPage extends AbstractPage{
-
+public class ProductPage extends Pages {
 	@FindBy(how = How.ID, using = "back-to-products")
 	private WebElement backToProductsName;
 	@FindBy(how = How.ID, using = "add-to-cart-sauce-labs-backpack")
@@ -22,24 +21,23 @@ public class ProductPage extends AbstractPage{
 		super(driver);
 	}
 
-	public String getBackToProductsName(){
+	public String getBackToProductsName() {
 		return getText(backToProductsName);
 	}
 
-	public void clickAddToCartButton(){
+	public void clickAddToCartButton() {
 		click(addToCartButton);
 	}
 
-	public void removeFromCartButton(){
+	public void removeFromCartButton() {
 		click(removeFromCartButton);
 	}
 
-	public boolean isRemoveFromCartButtonPresent(){
+	public boolean isRemoveFromCartButtonPresent() {
 		return removeFromCartButton.isDisplayed();
 	}
 
 	public boolean isCartBadgePresent() {
 		return cartIcon.findElement(cssSelector(".shopping_cart_badge")).isEnabled();
 	}
-
 }

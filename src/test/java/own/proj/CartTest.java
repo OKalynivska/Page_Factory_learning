@@ -5,25 +5,26 @@ import static org.assertj.core.api.Assertions.assertThat;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
 
-public class CartTest extends AbstractTest{
+public class CartTest extends AbstractTest {
+	private Pages pages;
 	private LoginPage loginPage;
-	private  ProductsPage productsPage;
+	private ProductsPage productsPage;
 	private ProductPage productPage;
 	private YourCartPage yourCartPage;
 
-
 	@BeforeMethod
-	public void goToPage() {
-		loginPage = openPage("loginUrl", LoginPage.class);
+	public void goToProductPage() {
+		pages = new Pages(driver);
+		loginPage = pages.loginPage();
 		loginPage.login("standard_user", "secret_sauce");
-		productsPage = openPage("productsUrl", ProductsPage.class);
-		productPage = openPage("productUrl", ProductPage.class);
+		productsPage = pages.productsPage();
+		productPage = pages.productPage();
 	}
 
 	@Test
-	public void checkCartSizeNotNull(){
+	public void checkCartSizeNotNull() {
 		productPage.clickAddToCartButton();
-		yourCartPage = openPage("cartUrl", YourCartPage.class);
+		yourCartPage = pages.yourCartPage();
 		assertThat(yourCartPage.checkNumberOfItems()).isGreaterThan(0);
 	}
 }

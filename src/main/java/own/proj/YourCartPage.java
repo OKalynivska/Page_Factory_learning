@@ -5,9 +5,8 @@ import java.util.List;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.How;
 
-public class YourCartPage extends AbstractPage{
+public class YourCartPage extends Pages{
 	@FindBy(className =  "cart_item")
 	private List<WebElement> listCartItems;
 	public YourCartPage(WebDriver driver) {
