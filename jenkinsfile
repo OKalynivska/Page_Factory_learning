@@ -1,26 +1,19 @@
 pipeline {
   agent any
 
-  // Get the branch name from environment variable
   def branchName = env.BRANCH_NAME
 
-  // Check if branch name is available (optional)
-  if (branchName == "") {
-    error "Impossible to get the branch name. Check your configuration."
-  }
 
   stages {
     // Stage to get and display branch name and changes
     stage("Get Branch Name and Changes") {
       steps {
         script {
-          echo "Назва гілки: ${branchName}" // Display branch name in Ukrainian
+          echo "Branch name: ${branchName}"
 
-          // Get recent changes (adjust -n for a different number)
           def changes = sh script: "git log --pretty=%B -n 100 origin/${branchName}", returnStdout: true
 
-          // Display recent changes
-          echo "Список змін:"
+          echo "List of added changes:"
           echo "${changes}"
         }
       }
