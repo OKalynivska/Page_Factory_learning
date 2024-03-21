@@ -8,7 +8,7 @@ pipeline {
           echo "Branch name: ${branchName}"
 
           def changes = sh script: "git log --pretty=%B -n 100 origin/${branchName}", returnStdout: true
-          def changes = sh script: "git log --oneline --decorate origin/${branchName}", returnStdout: true
+          def lastChanges = sh script: "git log --oneline --decorate origin/${branchName}", returnStdout: true
 
           echo "List of added changes:"
           echo "${changes}"
