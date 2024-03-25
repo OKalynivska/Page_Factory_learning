@@ -18,7 +18,9 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh "mvn clean package"
+        container ('maven'){
+                  sh 'mvn version'
+                }
         
 
         post {
