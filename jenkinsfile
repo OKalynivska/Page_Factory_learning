@@ -16,9 +16,13 @@ pipeline {
         }
       }
     }
+  tools {
+        maven 'Maven 3.8.6'
+        jdk 'Java 17.0.4.1'
+    }
     stage('Test') {
       steps {
-        container ('maven')
+        
                   sh 'mvn version'
                 
         
