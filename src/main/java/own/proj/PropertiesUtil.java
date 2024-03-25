@@ -5,21 +5,25 @@ import java.io.InputStream;
 import java.util.Properties;
 
 public final class PropertiesUtil {
-	public static final Properties PROPERTIES = new Properties();
+	private static PropertiesUtil instance;
+	private final Properties properties = new Properties();
 
-	static {
-		loadProperties();
+	public static synchronized PropertiesUtil getPropertiesInstance() {
+		if (instance == null) {
+			instance = new PropertiesUtil();
+		}
+		return instance;
 	}
 
-	private static void loadProperties() {
+	private PropertiesUtil() {
 		try (InputStream stream = PropertiesUtil.class.getClassLoader().getResourceAsStream("config.properties")) {
-			PROPERTIES.load(stream);
-		} catch (IOException ex) {
-			throw new RuntimeException(ex);
+			properties.load(stream);
+		} catch (IOException e) {
+			throw new IllegalStateException("Failed to load properties", e);
 		}
 	}
 
-	public static String get(String key) {
-		return PROPERTIES.getProperty(key);
+	public String get(String key) {
+		return properties.getProperty(key);
 	}
 }

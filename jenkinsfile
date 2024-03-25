@@ -1,18 +1,45 @@
 pipeline {
   agent any
+
   stages {
-    stage("Get Branch Name and Changes") {
+    stage("Check Branch Name") {
       steps {
         script {
-         def branchName = env.BRANCH_NAME
-          echo "Branch name: ${branchName}"
-
-          def changes = sh script: "git log --pretty=%B -n 100 origin/${branchName}", returnStdout: true
-          def lastChanges = sh script: "git log --oneline --decorate origin/${branchName}", returnStdout: true
-
-          echo "List of added changes:"
-          echo "${changes}"
+          def branchName = env.BRANCH_NAME
+          if (branchName == "") {
+            error "Неможливо отримати назву гілки. Перевірте конфігурацію."
+          } else if (!(branchName == "main" || branchName.startsWith("feature/") || branchName.startsWith("bugfix/"))) {
+            echo "Warning: Назва гілки '${branchName}' не відповідає очікуваному формату (main, feature/, bugfix/). Будь ласка, перейменуйте гілку."
+          }
         }
+      }
+    }
+
+    stage("Test Branch Name") {
+      when {
+        anyOf {
+          branch "main"
+          branch "feature/*"
+          branch "bugfix/*"
+        }
+      }
+      steps {
+        echo "Назва гілки '${env.BRANCH_NAME}' дозволена."
+      }
+    }
+
+    stage("Wrong Branch Name") {
+      when {
+        not {
+          anyOf {
+            branch "main"
+            branch "feature/*"
+            branch "bugfix/*"
+          }
+        }
+      }
+      steps {
+        error("Неправильна назва гілки: '${env.BRANCH_NAME}'. Будь ласка, використовуйте main, feature/ або bugfix/ у назві гілки.")
       }
     }
   }

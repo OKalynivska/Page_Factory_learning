@@ -25,8 +25,9 @@ public class ProductPage extends Pages {
 		return getText(backToProductsName);
 	}
 
-	public void clickAddToCartButton() {
+	public ProductPage clickAddToCartButton() {
 		click(addToCartButton);
+		return this;
 	}
 
 	public void removeFromCartButton() {

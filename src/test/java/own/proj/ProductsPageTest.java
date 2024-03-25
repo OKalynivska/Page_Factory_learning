@@ -13,35 +13,33 @@ import org.testng.annotations.Test;
 public class ProductsPageTest extends AbstractTest {
 	private Pages pages;
 	private LoginPage loginPage;
-	private ProductsPage productsPage;
-	private ProductPage productPage;
 
 	@BeforeMethod
-	public void goToProductsPage() {
-		pages = new Pages(driver);
+	public void login() {
+		pages=new Pages(driver);
 		loginPage = pages.loginPage();
 		loginPage.login("standard_user", "secret_sauce");
-		productsPage = pages.productsPage();
 	}
 
 	@Test
 	public void checkItemList() {
 		List<String> expectedList = Arrays.asList("All Items", "About", "Logout", "Reset App State");
-		List<String> actualList = productsPage.getItemByName();
+		List<String> actualList = pages.productsPage().getItemByName();
 
 		assertThat(actualList).containsExactlyInAnyOrderElementsOf(expectedList);
 	}
 
 	@Test
 	public void addProductToCart_CartNotEmpty() {
-		productsPage.getInventoryItemByName("Sauce Labs Backpack");
-		productPage = pages.productPage();
+		pages.productsPage().getInventoryItemByName("Sauce Labs Backpack");
 
-		assertEquals(productPage.getBackToProductsName(), "Back to products", "Values are different");
+		assertEquals(pages.productPage().getBackToProductsName(), "Back to products", "Values are different");
 
-		productPage.clickAddToCartButton();
+		boolean isCartButtonPresent = pages.productPage()
+				.clickAddToCartButton()
+				.isRemoveFromCartButtonPresent();
+		assertTrue(isCartButtonPresent);
 
-		assertTrue(productPage.isRemoveFromCartButtonPresent());
-		assertTrue(productPage.isCartBadgePresent());
+		assertTrue(pages.productPage().isCartBadgePresent());
 	}
 }
