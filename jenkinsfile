@@ -19,25 +19,21 @@ pipeline {
 
     stage('Test') {
       steps {
-        
-                  sh 'mvn -v'
-                
-        
+        sh 'mvn -v'
+      }
 
-        post {
-          success {
-            publishHTML([
-              allowMissing: false,
-              alwaysLinkToLastBuild: false,
-              keepAll: false,
-              reportDir: 'target/surefire-reports/',
-              reportFiles: 'emailable-report.html',
-              reportName: 'HTML Report',
-              reportTitles: '',
-              useWrapperFileDirectly: true
-            ])
-          }
-        }
+      // Publish HTML report on success
+      success {
+        publishHTML([
+          allowMissing: false,
+          alwaysLinkToLastBuild: false,
+          keepAll: false,
+          reportDir: 'target/surefire-reports/',
+          reportFiles: 'emailable-report.html',
+          reportName: 'HTML Report',
+          reportTitles: '',
+          useWrapperFileDirectly: true
+        ])
       }
     }
   }
