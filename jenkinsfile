@@ -5,13 +5,12 @@ pipeline {
    stage('Check') {
       steps {
         script {
+          env.BRANCH_NAME = sh script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true
           def branchName = env.BRANCH_NAME
-def commitHash = sh script: 'git rev-parse HEAD', returnStdout: true
-def repoUrl = 'https://github.com/your-organization/your-repo.git'
+          def commitHash = sh script: 'git rev-parse HEAD', returnStdout: true
 
-echo "Branch name: ${branchName}"
-echo "Commit hash: ${commitHash}"
-echo "Repository URL: ${repoUrl}"
+         echo "Branch name: ${branchName}"
+         echo "Commit hash: ${commitHash}"
         }
       }
     }
