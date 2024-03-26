@@ -2,7 +2,9 @@ pipeline {
     agent any
  
     stages {
-stage('Check'){}
+stage('Check'){
+steps{}
+}
       
         stage('Test') {
             steps {
