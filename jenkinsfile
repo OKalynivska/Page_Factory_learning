@@ -8,7 +8,7 @@ pipeline {
                 sh "mvn -D clean test"
             }
           post {               
-                success {
+                always {
                    publishHTML([
                        allowMissing: false, 
                        alwaysLinkToLastBuild: false, 
