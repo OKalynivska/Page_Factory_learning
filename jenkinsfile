@@ -8,15 +8,7 @@ pipeline {
           def branchName = env.BRANCH_NAME
           echo "Branch name: ${branchName}"
 
-          // Capture Git log output for potential later use
-          def fullLog = sh script: "git log --pretty=%B -n 100 origin/${branchName}", returnStdout: true
-
-          // Extract a limited number of recent changes for display
-          def lastChanges = sh script: "git log --oneline --decorate --max-count=10 origin/${branchName}", returnStdout: true
-
-          echo "List of recent changes:"
-          echo "${lastChanges}"
-        }
+      
       }
     }
 
