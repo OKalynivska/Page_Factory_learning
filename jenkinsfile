@@ -20,7 +20,7 @@ pipeline {
       }
 
       post {
-        success {
+        always {
           publishHTML([
             allowMissing: false,
             alwaysLinkToLastBuild: false,
