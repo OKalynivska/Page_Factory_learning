@@ -2,16 +2,13 @@ pipeline {
   agent any
 
   stages {
-   stage('Check') {
+   stage('Check Branch name and Commit hash') {
       steps {
         script {
-         def branchName = sh script: 'git rev-parse --abbrev-ref --no-git-dir HEAD@{upstream}', returnStdout: true
+          def branchName = sh script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true
           echo "Branch name: ${branchName}"
-
-         
-          def commitHash = sh script: 'git rev-parse HEAD', returnStdout: true
-
-         
+ 
+         def commitHash = sh script: 'git rev-parse HEAD', returnStdout: true
          echo "Commit hash: ${commitHash}"
         }
       }
