@@ -9,7 +9,7 @@ pipeline {
       }
 
       post {
-        always {
+        success {
           publishHTML([
             allowMissing: false,
             alwaysLinkToLastBuild: false,
