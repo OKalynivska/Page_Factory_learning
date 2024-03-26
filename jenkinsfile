@@ -2,6 +2,19 @@ pipeline {
   agent any
 
   stages {
+   stage('Check') {
+      steps {
+        script {
+          def branchName = env.BRANCH_NAME
+def commitHash = sh script: 'git rev-parse HEAD', returnStdout: true
+def repoUrl = 'https://github.com/your-organization/your-repo.git'
+
+echo "Branch name: ${branchName}"
+echo "Commit hash: ${commitHash}"
+echo "Repository URL: ${repoUrl}"
+        }
+      }
+    }
     
     stage('Run E2E tests') {
       steps {
@@ -20,14 +33,6 @@ pipeline {
             reportTitles: '',
             useWrapperFileDirectly: true
           ])
-        }
-      }
-    }
-stage('Check') {
-      steps {
-        script {
-          def branchName = env.BRANCH_NAME
-          echo "Branch name: ${branchName}"
         }
       }
     }
