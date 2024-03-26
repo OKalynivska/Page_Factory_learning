@@ -2,21 +2,7 @@ pipeline {
     agent any
  
     stages {
-        stage("Get Branch Name and Changes") {
-      steps {
-        script {
-          def branchName = env.BRANCH_NAME
-          echo "Branch name: ${branchName}"
-
-          def changes = sh script: "git log --pretty=%B -n 100 origin/${branchName}", returnStdout: true
-
-          def lastChanges = sh script: "git log --oneline --decorate origin/${branchName}", returnStdout: true
-
-          echo "List of added changes:"
-          echo "${changes}"
-        }
-      }
-    }
+      
         stage('Test') {
             steps {
                 sh "mvn -D clean test"
