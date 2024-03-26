@@ -1,40 +1,45 @@
 pipeline {
-    agent any
- 
-    stages {
-stage('Check'){
-steps{
-script {
+  agent any
+
+  stages {
+    stage('Check') {
+      steps {
+        script {
           def branchName = env.BRANCH_NAME
           echo "Branch name: ${branchName}"
 
-          def changes = sh script: "git log --pretty=%B -n 100 origin/${branchName}", returnStdout: true
+          // Capture Git log output for potential later use
+          def fullLog = sh script: "git log --pretty=%B -n 100 origin/${branchName}", returnStdout: true
 
-          def lastChanges = sh script: "git log --oneline --decorate origin/${branchName}", returnStdout: true
+          // Extract a limited number of recent changes for display
+          def lastChanges = sh script: "git log --oneline --decorate --max-count=10 origin/${branchName}", returnStdout: true
 
-          echo "List of added changes:"
-          echo "${changes}"
+          echo "List of recent changes:"
+          echo "${lastChanges}"
         }
-}
-}
-      
-        stage('Test') {
-            steps {
-                sh "mvn -D clean test"
-            }
-          post {               
-                always {
-                   publishHTML([
-                       allowMissing: false, 
-                       alwaysLinkToLastBuild: false, 
-                       keepAll: false, 
-                       reportDir: 'target/surefire-reports/', 
-                       reportFiles: 'index.html', 
-                       reportName: 'HTML Report', 
-                       reportTitles: '', 
-                       useWrapperFileDirectly: true])
-                }
-            }
-        }
+      }
     }
+
+    stage('Test') {
+      steps {
+        sh "mvn -D clean test"
+      }
+
+      // Publish HTML report regardless of test outcome
+      post {
+        always {
+          publishHTML([
+            allowMissing: false,
+            alwaysLinkToLastBuild: false,
+            keepAll: false,
+            reportDir: 'target/surefire-reports/',
+            reportFiles: 'index.html',  // Assuming your report is named index.html
+            reportName: 'HTML Report',
+            reportTitles: '',
+            useWrapperFileDirectly: true
+          ])
+        }
+      }
+    }
+  }
 }
