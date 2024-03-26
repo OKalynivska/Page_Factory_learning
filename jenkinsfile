@@ -2,22 +2,12 @@ pipeline {
   agent any
 
   stages {
-    stage('Check') {
-      steps {
-        script {
-          def branchName = env.BRANCH_NAME
-          echo "Branch name: ${branchName}"
-
-      }
-      }
-    }
-
+    
     stage('Test') {
       steps {
         sh "mvn -D clean test"
       }
 
-      // Publish HTML report regardless of test outcome
       post {
         always {
           publishHTML([
@@ -25,7 +15,7 @@ pipeline {
             alwaysLinkToLastBuild: false,
             keepAll: false,
             reportDir: 'target/surefire-reports/',
-            reportFiles: 'index.html',  // Assuming your report is named index.html
+            reportFiles: 'index.html', 
             reportName: 'HTML Report',
             reportTitles: '',
             useWrapperFileDirectly: true
