@@ -3,7 +3,7 @@ pipeline {
 
   stages {
     
-    stage('Test') {
+    stage('Run E2E tests') {
       steps {
         sh "mvn -D clean test"
       }
@@ -20,6 +20,14 @@ pipeline {
             reportTitles: '',
             useWrapperFileDirectly: true
           ])
+        }
+      }
+    }
+stage('Check') {
+      steps {
+        script {
+          def branchName = env.BRANCH_NAME
+          echo "Branch name: ${branchName}"
         }
       }
     }
