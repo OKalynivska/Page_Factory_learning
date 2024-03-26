@@ -5,12 +5,13 @@ pipeline {
    stage('Check') {
       steps {
         script {
-          def branchName = sh script: 'git rev-parse --abbrev-ref HEAD', returnStdout: true
+         def branchName = sh script: 'git rev-parse --abbrev-ref --no-git-dir HEAD@{upstream}', returnStdout: true
+          echo "Branch name: ${branchName}"
 
          
           def commitHash = sh script: 'git rev-parse HEAD', returnStdout: true
 
-         echo "Branch name: ${branchName}"
+         
          echo "Commit hash: ${commitHash}"
         }
       }
